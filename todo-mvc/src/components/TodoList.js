@@ -1,31 +1,30 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import vdux from 'vdux/dom'
+import {component, element} from 'vdux'
 import Todo from './Todo'
 
-const TodoList = ({ todos, onTodoChange, onTodoDelete, onEdit}) => (
-  <ul className="todo-list">
-    {todos.map(todo => (
-      <Todo key={todo.id} {...todo}
-      onChange={() => onTodoChange(todo.id)}
-      onDelete={() => onTodoDelete(todo.id)}
-      onEdit={(id, text) => onEdit(id, text)}
-      />
-    ))}
-  </ul>
-)
+const TodoList = component({
+  render ({props, state, actions}){
+    var visibleToDoList
+    if(props.visibilityFilter === 'SHOW_ALL'){
+      visibleToDoList = props.todos
+    } else if(props.visibilityFilter === 'SHOW_COMPLETED') {
+      visibleToDoList = props.todos.filter(todo => (todo.completed))
+    } else {
+      visibleToDoList = props.todos.filter(todo => (!todo.completed))
+    }
+    return (
+      <ul class="todo-list">
+        {visibleToDoList.map(todo => (
+          <Todo key={todo.id} {...todo}
+          onChange={() => props.toggleToDo(todo.id)}
+          onDelete={() => props.deleteToDo(todo.id)}
+          onEdit={(id, text) => props.toggleEdit(id, text)}
+          />
+        ))}
+      </ul>
+    )
+  }
+})
 
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      completed: PropTypes.bool.isRequired,
-      edit: PropTypes.bool.isRequired,
-      text: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  onTodoChange: PropTypes.func.isRequired,
-  onTodoDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-}
 
 export default TodoList

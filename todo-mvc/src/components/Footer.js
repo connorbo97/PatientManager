@@ -5,6 +5,11 @@ import PropTypes from 'prop-types'
 
 */
 
+const Footer = component({
+  render({}){
+
+  },
+})
 
 const Footer = ({todos, onClearCompleted}) => {
   var active = todos.filter(todo =>!(todo.completed)).length
