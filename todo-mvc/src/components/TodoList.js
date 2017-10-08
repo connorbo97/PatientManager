@@ -1,28 +1,32 @@
 import vdux from 'vdux/dom'
 import {component, element} from 'vdux'
 import Todo from './Todo'
+import fire from 'vdux-fire'
 
 const TodoList = component({
   render ({props, state, actions}){
-    var visibleToDoList
-    if(props.visibilityFilter === 'SHOW_ALL'){
-      visibleToDoList = props.todos
-    } else if(props.visibilityFilter === 'SHOW_COMPLETED') {
-      visibleToDoList = props.todos.filter(todo => (todo.completed))
-    } else {
-      visibleToDoList = props.todos.filter(todo => (!todo.completed))
+    if(props.todos.value == null){
+      return <span></span>
     }
-    return (
-      <ul class="todo-list">
-        {visibleToDoList.map(todo => (
-          <Todo key={todo.id} {...todo}
-          onChange={() => props.toggleToDo(todo.id)}
-          onDelete={() => props.deleteToDo(todo.id)}
-          onEdit={(id, text) => props.toggleEdit(id, text)}
-          />
-        ))}
-      </ul>
-    )
+    if(props.todos.loading){
+      return <span></span>
+    } else {
+      var visibleToDoList = []
+      if(props.visibilityFilter === 'SHOW_ALL'){
+        visibleToDoList = props.todos.value
+      } else if(props.visibilityFilter === 'SHOW_COMPLETED') {
+        visibleToDoList = props.todos.value.filter(todo => (todo.completed))
+      } else {
+        visibleToDoList = props.todos.value.filter(todo => (!todo.completed))
+      }
+      return (
+        <ul class="todo-list">
+          {visibleToDoList.map(todo => (
+            <Todo key={todo.key} {...props} keyID={todo.key} {...todo} />
+          ))}
+        </ul>
+      )
+    }
   }
 })
 

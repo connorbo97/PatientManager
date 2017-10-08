@@ -26,11 +26,19 @@ const AddToDo = component({
   },
 
   controller: {
-    * submit ({state, props, actions,}) {
+    * submit ({state, props, actions,context}) {
         if (!state.value.trim()) {
           return
         }
-        yield props.addToDo(state.value)
+        var newToDo = {
+          text:state.value,
+          completed:false,
+          edit:false
+        }
+        yield context.firebasePush(`/todos/${props.user}/`, newToDo)
+        // yield context.firebaseUpdate('/todos', {
+        //   value: newValue
+        // })
         yield actions.submitTextValue('')
     }
   },

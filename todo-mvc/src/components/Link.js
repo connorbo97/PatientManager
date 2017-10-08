@@ -1,41 +1,30 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import vdux from 'vdux/dom'
+import {component, element} from 'vdux'
+import fire from 'vdux-fire'
 
-const Link = ({ active, children, onClick }) => {
-  if (active) {
-    return (<span>
-      <a className="selected"
-        href= {"#/" + children}
-        onClick={e => {
-          e.preventDefault()
-          onClick()
-        }}
-      >
-        {children}
-      </a>
-    </span>
-    )
-  }
-  return (
-    <span>
-    <a
-      href={"#/" + children}
-      onClick={e => {
-        e.preventDefault()
-        onClick()
-      }}
-    >
-      {children}
-    </a>
-  </span>
+const Link = component({
+  render({props, actions}){
+    var {filter, content} = props
+    var active = (filter === props.visibilityFilter)
+    if (active) {
+        return (<span>
+          <a className="selected" href= {"#/" + content} onClick={props.setFilter(filter)}>
+            {content}
+          </a>
+        </span>
+        )
+      }
+      return (
+        <span>
+          <a href= {"#/" + content} onClick={props.setFilter(filter)}>
+          {content}
+        </a>
+      </span>
 
-  )
-}
+      )
+  },
+  
+})
 
-Link.propTypes = {
-  active: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired
-}
 
 export default Link

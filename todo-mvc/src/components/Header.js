@@ -1,6 +1,6 @@
 import vdux from 'vdux/dom'
 import {component, element} from 'vdux'
-import AddToDo from '../containers/AddTodo'
+import AddToDo from './AddTodo'
 
 
 const Header = component({

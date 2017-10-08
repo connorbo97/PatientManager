@@ -17,46 +17,39 @@ const Todo = component({
     if(props.edit === true){
       return (
         <li className="editing">
-            <input type="text" id={"edit"+ props.id} className="edit" autoFocus="autofocus" onFocus={decodeRaw(actions.focus)} defaultValue={state.text} onKeyUp={decodeRaw(actions.update)}/>
+          <input type="text" id={"edit"+ props.keyID} className="edit" autoFocus="autofocus" onFocus={decodeRaw(actions.focus)} defaultValue={props.text} onKeyUp={decodeRaw(actions.update)}/>
         </li>
         )
-    } else if(props.completed === true){
+    } else{
         return (
           <li className='completed' >
             <div className="view">
-              <input className="toggle" id={"checkbox" + props.id} type="checkbox" defaultChecked onChange={actions.change}/>
-              <label onDblClick={actions.edit(props.text)}>{props.text}</label>
+              <input className="toggle" id={"checkbox" + props.keyID} checked={props.completed} type="checkbox" defaultChecked onChange={actions.change}/>
+              <label onDblClick={actions.startEdit}>{props.text}</label>
               <button className="destroy" onClick={actions.delete}></button>
             </div>
           </li>
-        )
-      } else {
-        return (
-        <li>
-          <div className="view">
-            <input className="toggle" id={"checkbox" + props.id} unchecked type="checkbox" onChange={actions.change}/>
-            <label onDblClick={actions.edit}>{props.text}</label>
-            <button className="destroy" onClick={actions.delete}></button>
-          </div>
-        </li>
-       )
+          )
       }
     },
 
 
   controller: {
-    * change ({state, props, actions}) {
-        yield props.onChange()
+    * change ({state, props, actions, context}) {
+        yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {completed:!props.completed})
     },
 
-    * delete ({state, props, actions}) {
-        yield props.onDelete()
+    * delete ({state, props, actions, context}) {
+      yield context.firebaseSet(`/todos/${props.user}/${props.keyID}/`, null)
     },
 
 
-    * edit ({state, props, actions}) {
-        yield props.onEdit(props.id, props.text)
-        yield actions.editText(props.text)
+    * endEdit ({state, props, actions, context}) {
+      yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {edit:false, text:state.text})
+    },
+
+    * startEdit ({state, props, actions, context}) {
+      yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {edit:true})
     },
 
 
@@ -64,7 +57,7 @@ const Todo = component({
 
     * update ({state, props, actions}, event) {
         if(event.keyCode === 13){
-          yield props.onEdit(props.id, event.target.value.trim())
+          yield actions.endEdit(props.id, event.target.value.trim())
         }
         yield actions.updateText(event.target.value)
     }

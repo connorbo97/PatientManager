@@ -2,8 +2,30 @@ import vdux from 'vdux/dom'
 import {component, element} from 'vdux'
 import Header from './Header'
 import Main from './Main'
+import Footer from './Footer'
+import BottomText from './BottomText'
+import TestFirebasePush from './TestFirebasePush'
 import 'regenerator-runtime/runtime'
+import {
+  middleware as firebaseMw,
+  push as firebasePush,
+  update as firebaseUpdate,
+  set as firebaseSet,
+  transaction as firebaseTransaction
+} from 'vdux-fire'
+import LoginUser from './LoginUser'
+
 vdux(() => <App />)
+
+ var config = {
+    apiKey: "AIzaSyDsUtJI3lDSboIC-ZaWln_UiruO9dq0rrY",
+    authDomain: "vduxpractice.firebaseapp.com",
+    databaseURL: "https://vduxpractice.firebaseio.com",
+    projectId: "vduxpractice",
+    storageBucket: "",
+    messagingSenderId: "312191289042"
+  };
+
 
 /**
  * App
@@ -12,27 +34,69 @@ vdux(() => <App />)
 const App = component({
 	initialState: {
 		id: 0,
+    login: false,
 		todos: [],
-    visibilityFilter: 'SHOW_ALL'
+    visibilityFilter: 'SHOW_ALL',
+    user:"defaultUser"
 	},
+  getContext ({props, actions}) {
+    return actions
+  },
   render ({state, actions}) {
+    if(state.login){
     return (
 	  <div>
 	    <section class="todoapp">
+        <TestFirebasePush {...actions} {...state} />
 	   		<Header {...actions} {...state} />
         <Main {...actions} {...state} />
+        <Footer {...state} {...actions} />
 	   	</section>
+      <BottomText/>
 	  </div>
 	  )
+      
+    } else {
+      return (
+        <div>
+          <LoginUser {...actions} {...state}/>
+        </div>
+        )
+    }
+  },
+
+  middleware: [firebaseMw(config)],
+
+  controller: {
+    firebaseSet: wrapEffect(firebaseSet),
+    firebasePush: wrapEffect(firebasePush),
+    firebaseUpdate: wrapEffect(firebaseUpdate),
+    firebaseTransaction: wrapEffect(firebaseTransaction),
   },
 
   reducer: {
-    addToDo: (state, todo) => {
-    	return {
-      		todos:[...state.todos, {id:state.id++, text:todo, completed: false, edit: false}]
-    	}
+    loginToApp: (state) => {
+      return {
+          login:!state.login
+      }
+    },
+    setFilter: (state, filter) => {
+      return {
+          visibilityFilter:filter
+      }
     },
 
+    changeUser: (state, user) => {
+      return {
+        user
+      }
+    },
+
+    addFullToDo: (state, todo) => {
+      return {
+          todos:[...state.todos, todo]
+      }
+    },
 
     deleteToDo: (state, deletedId) => {
       return {
@@ -98,3 +162,7 @@ const App = component({
 
   }
 })
+
+function wrapEffect (fn) {
+  return (model, ...args) => fn(...args)
+}
