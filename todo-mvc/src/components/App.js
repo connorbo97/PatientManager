@@ -4,8 +4,13 @@ import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
 import BottomText from './BottomText'
-import TestFirebasePush from './TestFirebasePush'
+import LoginUser from './LoginUser'
 import 'regenerator-runtime/runtime'
+import {
+  LoginMiddleware,
+  signIn,
+  signUp
+} from './Cobodux-login'
 import {
   middleware as firebaseMw,
   push as firebasePush,
@@ -13,7 +18,7 @@ import {
   set as firebaseSet,
   transaction as firebaseTransaction
 } from 'vdux-fire'
-import LoginUser from './LoginUser'
+
 
 vdux(() => <App />)
 
@@ -37,8 +42,9 @@ const App = component({
     login: false,
 		todos: [],
     visibilityFilter: 'SHOW_ALL',
-    user:"defaultUser"
-	},
+    user:"defaultUser",
+    welcomeName:"Friend-o"
+   },
   getContext ({props, actions}) {
     return actions
   },
@@ -47,7 +53,7 @@ const App = component({
     return (
 	  <div>
 	    <section class="todoapp">
-        <TestFirebasePush {...actions} {...state} />
+        <p>Welcome {state.welcomeName}</p>
 	   		<Header {...actions} {...state} />
         <Main {...actions} {...state} />
         <Footer {...state} {...actions} />
@@ -65,13 +71,16 @@ const App = component({
     }
   },
 
-  middleware: [firebaseMw(config)],
+  middleware: [firebaseMw(config), LoginMiddleware()],
 
   controller: {
     firebaseSet: wrapEffect(firebaseSet),
     firebasePush: wrapEffect(firebasePush),
     firebaseUpdate: wrapEffect(firebaseUpdate),
     firebaseTransaction: wrapEffect(firebaseTransaction),
+    firebaseTransaction: wrapEffect(firebaseTransaction),
+    firebaseSignIn: wrapEffect(signIn),
+    firebaseSignUp: wrapEffect(signUp),
   },
 
   reducer: {
@@ -83,6 +92,11 @@ const App = component({
     setFilter: (state, filter) => {
       return {
           visibilityFilter:filter
+      }
+    },
+    changeWelcomeName: (state, welcomeName) => {
+      return {
+        welcomeName
       }
     },
 
