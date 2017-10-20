@@ -15,7 +15,7 @@ import {middleware as firebaseMw} from 'vdux-fire'
 
 let username;
 
-const TestMiddleware = component({
+const LoginUser = component({
 	  initialState: {
 	    email: '',
 	    password: '',
@@ -35,8 +35,8 @@ const TestMiddleware = component({
 
 	        </form>
 	        <div>{state.errorMessage}</div>
-	        <button onClick={actions.submit(true)}>Login Existing User</button>
-	        <button onClick={actions.submit(false)}>Create User</button>
+	        <button class="log-in-existing"onClick={actions.submit(true)}>Login Existing User</button>
+	        <button class="log-in-new"onClick={actions.submit(false)}>Create User</button>
 	      </div>
 	    )
 	  },
@@ -56,9 +56,7 @@ const TestMiddleware = component({
 				}
 				else{
 					yield actions.updateErrorMessage("loading")
-			        yield props.changeWelcomeName(email.substr(0, email.indexOf("@")))
-					var newUser = email.replace(/[.#$]/g,"?")
-			        yield props.changeUser(newUser)
+			        yield context.changeWelcomeName(email.substr(0, email.indexOf("@")))
 			        var newToDo1 = {
 			          text:"Exist",
 			          completed:true,
@@ -69,13 +67,8 @@ const TestMiddleware = component({
 			          completed:false,
 			          edit:false
 			        }
-			        yield props.loginToApp()
-			        yield context.firebasePush(`/todos/${newUser}/`, newToDo1)
-			        yield context.firebasePush(`/todos/${newUser}/`, newToDo2)
-			        // yield context.firebaseUpdate('/todos', {
-			        //   value: newValue
-			        // })
 			        yield actions.clearLogin()
+			        yield context.setURL('/')
 				}
 			}
 			
@@ -87,14 +80,9 @@ const TestMiddleware = component({
 		        yield actions.clearPassword()
 			}
 			else{
-		        yield props.changeWelcomeName(email.substr(0, email.indexOf("@")))
-				var newUser = email.replace(/[.#$]/g,"?")
-		        yield props.changeUser(newUser)
-		        yield props.loginToApp()
-		        // yield context.firebaseUpdate('/todos', {
-		        //   value: newValue
-		        // })
+		        yield context.changeWelcomeName(email.substr(0, email.indexOf("@")))
 		        yield actions.clearLogin()
+			    yield context.setURL('/')
 			}
 			
 		},
@@ -157,4 +145,4 @@ function wrapEffect (fn) {
   return (model, ...args) => fn(...args)
 }
 
-export default 	TestMiddleware
+export default 	LoginUser

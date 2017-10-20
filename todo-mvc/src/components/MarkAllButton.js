@@ -10,8 +10,8 @@ const MarkAllButton = component({
 		} else {
 			if(props.todos.value.length == 0){return <span/>}
 			return(
-				<div  >
-					<input id="toggle-all" className="toggle-all" type="checkbox" onChange={actions.markAll}/>
+				<div onClick={actions.markAll}>
+					<input id="toggle-all" class="toggle-all" type="checkbox" />
 					<label htmlFor="toggle-all">Mark all as complete</label>
 				</div>
 			)
@@ -21,13 +21,31 @@ const MarkAllButton = component({
 	controller: {
 		* markAll ({props, state,actions,context}) {
 			var todos = props.todos.value
+			var markCompleted = false
+			todos.map(todo => {
+				if(!(todo.completed))
+					markCompleted=true
+				return todo
+			})
+			if(markCompleted){
+				yield todos.map(todo => context.firebaseUpdate(`/todos/${context.uid}/todos/${todo.key}/`, {completed:true}))
 
-			yield todos.map(todo => context.firebaseUpdate(`/todos/${props.user}/${todo.key}/`, {completed:true}))
+			} else {
+				yield todos.map(todo => context.firebaseUpdate(`/todos/${context.uid}/todos/${todo.key}/`, {completed:false}))
+			}
 			
 
 		},
 
-	}
+	},
+
+	reducer: {
+
+	    testChange: (state) => {
+	    	console.log("boi")
+	      return {}
+	    },
+	},
 })
 
 

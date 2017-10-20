@@ -1,0 +1,58 @@
+.welcome{
+	font-size: 30px;
+	font-weight: 100;
+	color: rgba(175, 47, 47, 0.15);
+	-webkit-text-rendering: optimizeLegibility;
+	-moz-text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility;
+}
+.log-out{
+	float:right;
+	position:absolute;
+	font-size: 20px;
+	font-weight: 100;
+	right: 15px;
+	top:20px;
+    background-color: #f0f0f0; /* Green */
+    border: none;
+	color: rgba(175, 47, 47, 0.30);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+
+.log-in-existing{
+	float:left;
+	font-size: 20px;
+	font-weight: 100;
+    background-color: #f0f0f0; /* Green */
+    border: none;
+	color: rgba(175, 47, 47, 0.30);
+    border: 2px solid #e7e7e7;
+    padding: 2px 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+
+.log-in-new{
+	float:left;
+	font-size: 20px;
+	font-weight: 100;
+    background-color: #f0f0f0; /* Green */
+    border: none;
+	color: rgba(175, 47, 47, 0.30);
+    border: 2px solid #e7e7e7;
+    padding: 2px 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}

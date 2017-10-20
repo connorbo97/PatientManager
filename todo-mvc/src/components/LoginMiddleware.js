@@ -14,6 +14,7 @@ import {
   once,
   signIn,
   signUp,
+  signOut,
   set
 } from './actions'
 
@@ -24,10 +25,21 @@ const LoginMiddleware = (newUser, email, password) =>{
 
 
 function mw({dispatch, getState, actions}) {
+	firebase.auth().onAuthStateChanged(function(user) {
+  		if (user) {
+  			console.log(user.uid)
+    		dispatch(actions.setUID(user.uid))
+  			var state = getState()
+    		dispatch(actions.firebaseSet(`/todos/${user.uid}/welcome`, user.email.substr(0, user.email.indexOf("@"))))
+  		} else {
+    		// No user is signed in.
+  		}
+	})
 	return (next) => (action) => {
 	    return Switch({
 	      [signUp.type]:sign_up,
 	      [signIn.type]:sign_in,
+	      [signOut.type]:sign_out,
 	      default: () => next(action)
 	    })(action.type, action.payload)
 
@@ -51,6 +63,17 @@ function sign_up(payload){
 function sign_in(payload){
     const {email, pass} = payload
 	return firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
+		// Handle Errors here.
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		console.log("Error " + errorCode + ": " + errorMessage)
+		return errorCode;
+		// ...
+		});
+}
+
+function sign_out(payload){
+	return firebase.auth().signOut().catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;

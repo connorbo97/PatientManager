@@ -16,40 +16,54 @@ const Todo = component({
   render({props, state, actions}) {
     if(props.edit === true){
       return (
-        <li className="editing">
-          <input type="text" id={"edit"+ props.keyID} className="edit" autoFocus="autofocus" onFocus={decodeRaw(actions.focus)} defaultValue={props.text} onKeyUp={decodeRaw(actions.update)}/>
+        <li class="editing">
+          <input type="text" id={"edit"+ props.keyID} class="edit" autoFocus="autofocus" onFocus={decodeRaw(actions.focus)} defaultValue={props.text} onKeyUp={decodeRaw(actions.update)}/>
         </li>
         )
     } else{
-        return (
-          <li className='completed' >
-            <div className="view">
-              <input className="toggle" id={"checkbox" + props.keyID} checked={props.completed} type="checkbox" defaultChecked onChange={actions.change}/>
-              <label onDblClick={actions.startEdit}>{props.text}</label>
-              <button className="destroy" onClick={actions.delete}></button>
-            </div>
-          </li>
+        if(props.completed === true){
+          
+          return (
+            <li class='completed' >
+              <div class="view">
+                <input class="toggle" id={"checkbox" + props.keyID} checked={props.completed} type="checkbox" defaultChecked onChange={actions.change}/>
+                <label onDblClick={actions.startEdit}>{props.text}</label>
+                <button class="destroy" onClick={actions.delete}></button>
+              </div>
+            </li>
           )
+        }
+        else {
+          return (
+            <li>
+              <div className="view">
+                <input class="toggle" id={"checkbox" + props.keyID} checked={props.completed} type="checkbox" defaultChecked onChange={actions.change}/>
+                <label onDblClick={actions.startEdit}>{props.text}</label>
+                <button class="destroy" onClick={actions.delete}></button>
+              </div>
+            </li>
+          )
+        }
       }
     },
 
 
   controller: {
     * change ({state, props, actions, context}) {
-        yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {completed:!props.completed})
+        yield context.firebaseUpdate(`/todos/${context.uid}/todos/${props.keyID}/`, {completed:!props.completed})
     },
 
     * delete ({state, props, actions, context}) {
-      yield context.firebaseSet(`/todos/${props.user}/${props.keyID}/`, null)
+      yield context.firebaseSet(`/todos/${context.uid}/todos/${props.keyID}/`, null)
     },
 
 
     * endEdit ({state, props, actions, context}) {
-      yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {edit:false, text:state.text})
+      yield context.firebaseUpdate(`/todos/${context.uid}/todos/${props.keyID}/`, {edit:false, text:state.text})
     },
 
     * startEdit ({state, props, actions, context}) {
-      yield context.firebaseUpdate(`/todos/${props.user}/${props.keyID}/`, {edit:true})
+      yield context.firebaseUpdate(`/todos/${context.uid}/todos/${props.keyID}/`, {edit:true})
     },
 
 

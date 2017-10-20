@@ -12,6 +12,7 @@ const push = createAction('vdux-fireSummon: push')
 const set = createAction('vdux-fireSummon: set')
 const signUp = createAction('vdux-fireSummon: signUp')
 const signIn = createAction('vdux-fireSummon: signIn')
+const signOut = createAction('vdux-fireSummon: signOut')
 
 export {
   unsubscribe,
@@ -25,5 +26,6 @@ export {
   once,
   signIn,
   set,
-  signUp
+  signUp,
+  signOut
 }

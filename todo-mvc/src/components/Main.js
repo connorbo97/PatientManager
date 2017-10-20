@@ -10,21 +10,17 @@ import fire from 'vdux-fire'
 	<VisibleTodoList/>
 */
 const Main = fire((props) => ({
-  todos:`/todos/${props.user}#orderByChild=text`
+  todos:`/todos/${props.uid}/todos#orderByChild=text`
 })) (component({
 	render ({props, state, actions}) {
-		if(true){
-		    return (
-		    	<div>
-					<section className="main">
-						<MarkAllButton {...props} todos={props.todos}/>
-						<TodoList {...props}  todos={props.todos}/>
-					</section>
-				</div>
-			  )
-		} else {
-			return (<span/>)
-		}
+	    return (
+	    	<div>
+				<section class="main">
+					<MarkAllButton {...props} todos={props.todos}/>
+					<TodoList {...props}  todos={props.todos}/>
+				</section>
+			</div>
+		  )
 	}
 
 }))

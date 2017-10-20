@@ -16,10 +16,7 @@ const AddToDo = component({
           onSubmit={actions.submit}
         >
 
-          <input onKeyUp={decodeValue(actions.update)} value={state.value}
-            className="new-todo" placeholder="What needs to be done?" autoFocus
-          
-          />
+          <input id="add-to-do-input"value={state.value} onKeyUp={decodeValue(actions.update)} class="new-todo" placeholder="What needs to be done?" autoFocus/>
         </form>
       </div>
     )
@@ -35,7 +32,7 @@ const AddToDo = component({
           completed:false,
           edit:false
         }
-        yield context.firebasePush(`/todos/${props.user}/`, newToDo)
+        yield context.firebasePush(`/todos/${context.uid}/todos`, newToDo)
         // yield context.firebaseUpdate('/todos', {
         //   value: newValue
         // })
@@ -44,9 +41,10 @@ const AddToDo = component({
   },
 
   reducer: {
-    submitTextValue: (state, value) => ({
-      value
-    }),
+    submitTextValue: (state, value) => {
+      document.getElementById("add-to-do-input").value = ""       //Shouldn't have to do this, not sure why
+      return {value}
+    },
     update: (state, value) => ({
       value
     })

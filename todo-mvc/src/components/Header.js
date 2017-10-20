@@ -1,6 +1,7 @@
 import vdux from 'vdux/dom'
 import {component, element} from 'vdux'
-import AddToDo from './AddTodo'
+import AddToDo from './AddToDo'
+import LogoutButton from './LogoutButton'
 
 
 const Header = component({
@@ -8,17 +9,14 @@ const Header = component({
   render ({props, state, actions}) {
     return (
 		<div>
-		    <header className="header">
+		    <header class="header">
 			    <h1>todos</h1>
-			    <AddToDo {...props} />
+			    <AddToDo {...props}/>
 			</header>
 		</div>
 	  )
   },
 
-  reducer:{
-
-  }
 })
 
 export default Header

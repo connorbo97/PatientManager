@@ -9,6 +9,7 @@ const refMethod = actions.refMethod
 const once = (ref, listener) => actions.once({ref, listener})
 const signUp = (email, pass) => actions.signUp({email, pass})
 const signIn = (email, pass) => actions.signIn({email, pass})
+const signOut = () => actions.signOut()
 
 
 
@@ -21,5 +22,6 @@ export {
   once,
   set,
   signUp,
-  signIn
+  signIn,
+  signOut
 }
