@@ -13,21 +13,21 @@ import {
   push as firebasePush,
   update as firebaseUpdate,
   set as firebaseSet,
+  once as firebaseOnce,
   transaction as firebaseTransaction
 } from 'vdux-fire'
 
 
 vdux(() => <App />)
 
- var config = {
-    apiKey: "AIzaSyDsUtJI3lDSboIC-ZaWln_UiruO9dq0rrY",
-    authDomain: "vduxpractice.firebaseapp.com",
-    databaseURL: "https://vduxpractice.firebaseio.com",
-    projectId: "vduxpractice",
-    storageBucket: "",
-    messagingSenderId: "312191289042"
+var config = {
+    apiKey: "AIzaSyB1xYJr8_7WPsIQv9rm5hb7022rk8O4YRQ",
+    authDomain: "patientpractice-6a05e.firebaseapp.com",
+    databaseURL: "https://patientpractice-6a05e.firebaseio.com",
+    projectId: "patientpractice-6a05e",
+    storageBucket: "patientpractice-6a05e.appspot.com",
+    messagingSenderId: "933104345422"
   };
-
 
 /**
  * App
@@ -36,7 +36,7 @@ vdux(() => <App />)
 const App = component({
   initialState: {
     uid:null,
-    url:'/signin',
+    url:'/',
     welcomeName:"Friend-o"
    },
   getContext ({props, actions,state}) {
@@ -57,6 +57,7 @@ const App = component({
     firebasePush: wrapEffect(firebasePush),
     firebaseUpdate: wrapEffect(firebaseUpdate),
     firebaseTransaction: wrapEffect(firebaseTransaction),
+    firebaseOnce: wrapEffect(firebaseOnce),
     firebaseSignIn: wrapEffect(signIn),
     firebaseSignUp: wrapEffect(signUp),
     firebaseSignOut: wrapEffect(signOut),

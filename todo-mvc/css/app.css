@@ -23,6 +23,20 @@
     transition-duration: 0.4s;
 }
 
+.load-date-button{
+    float:left;
+    font-size: 20px;
+    font-weight: 100;
+    background-color: #f0f0f0; /* Green */
+    border: none;
+    color: rgba(175, 47, 47, 0.30);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
 
 .log-in-existing{
 	float:left;

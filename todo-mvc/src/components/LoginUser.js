@@ -1,17 +1,7 @@
 import vdux from 'vdux/dom'
 import {component, element, decodeValue} from 'vdux'
 import fire from 'vdux-fire'
-import {middleware as firebaseMw} from 'vdux-fire'
 
-
- var config = {
-    apiKey: "AIzaSyDsUtJI3lDSboIC-ZaWln_UiruO9dq0rrY",
-    authDomain: "vduxpractice.firebaseapp.com",
-    databaseURL: "https://vduxpractice.firebaseio.com",
-    projectId: "vduxpractice",
-    storageBucket: "",
-    messagingSenderId: "312191289042"
-  };
 
 let username;
 

@@ -1,8 +1,7 @@
 import vdux from 'vdux/dom'
 import {component, element} from 'vdux'
-import TodoList from './TodoList'
-import MarkAllButton from './MarkAllButton'
-import Footer from './Footer'
+import LoadDate from './LoadDate'
+import AddDate from './AddDate'
 import fire from 'vdux-fire'
 
 /*
@@ -10,15 +9,30 @@ import fire from 'vdux-fire'
 	<VisibleTodoList/>
 */
 const Main = fire((props) => ({
-  todos:`/todos/${props.uid}/todos#orderByChild=text`
+  appointmentsOnDate:`/Dates/${props.date}`,
+  appointmentsForPatient:`/KaiserNumbers/${props.patient}`
 })) (component({
 	render ({props, state, actions}) {
+		console.log(props.appointmentsOnDate)
+		var result = "No Date Loaded"
+		var timeSlots = []
+		if(props.date != ""){
+			result += " Date:" + props.date 
+			if(!props.appointmentsOnDate.loading){
+				var appointments
+				if(props.appointmentsOnDate.value == null){
+					appointments = {appointments:}
+				} else {
+
+				}
+			}
+		}
+
 	    return (
 	    	<div>
-				<section class="main">
-					<MarkAllButton {...props} todos={props.todos}/>
-					<TodoList {...props}  todos={props.todos}/>
-				</section>
+	    		<LoadDate {...props} {...state} {...actions}/>
+	    		<p>{result} </p>
+	    		<AddDate {...props} {...state} {...actions}/>
 			</div>
 		  )
 	}
