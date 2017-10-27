@@ -36,6 +36,18 @@
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
 }
+.add-patient-button{
+    font-size: 10px;
+    font-weight: 50;
+    background-color: #00FF00; /* Green */
+    border: 1px;
+    color: rgba(175, 47, 47, 1);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
 
 
 .log-in-existing{

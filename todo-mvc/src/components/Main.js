@@ -20,18 +20,12 @@ const Main = fire((props) => ({
 			result += " Date:" + props.date 
 			if(!props.appointmentsOnDate.loading){
 				var appointments
-				if(props.appointmentsOnDate.value == null){
-					appointments = {appointments:}
-				} else {
-
-				}
 			}
 		}
 
 	    return (
 	    	<div>
 	    		<LoadDate {...props} {...state} {...actions}/>
-	    		<p>{result} </p>
 	    		<AddDate {...props} {...state} {...actions}/>
 			</div>
 		  )
